@@ -21,7 +21,10 @@
 <body>
 
     <!-- The Viewer will be instantiated here -->
-    <div id="MyViewerDiv"></div>
+    <div id="root">
+        <div id="MyViewerDiv"></div>
+        <button id="MyNextButton" onClick="loadNextModel()">Next!</button>
+    </div>
 
     <!-- The Viewer JS -->
     <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/4.*/three.min.js"></script>
@@ -32,9 +35,24 @@
         var viewer;
         var options = {
             env: 'AutodeskProduction',
-            accessToken: '<YOUR_APPLICATION_TOKEN>'
-        };
-        var documentId = 'urn:<YOUR_URN_ID>';
+            getAccessToken: function(onGetAccessToken) {
+                //
+                // TODO: Replace static access token string below with call to fetch new token from your backend
+                // Both values are provided by Forge's Authentication (OAuth) API.
+                //
+                // Example Forge's Authentication (OAuth) API return value:
+                // {
+                //    "access_token": "<YOUR_APPLICATION_TOKEN>",
+                //    "token_type": "Bearer",
+                //    "expires_in": 86400
+                // }
+                //
+                var accessToken = 'HZlGdBAqASvNCStCwX1itSFkyiaiyqA5Azz6NEO7WnuddlZ29rNhsOVTOyFvThMI';
+                var expireTimeSeconds = 86400;
+                onGetAccessToken(accessToken, expireTimeSeconds);
+            }
+        }
+        var documentId = 'urn:Z9XKTVMHlGeK7GZGcYZWxb5IYxq2mAnmvs8hlZZKZpHavZ2l';
         Autodesk.Viewing.Initializer(options, function onInitialized(){
             Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
         });
@@ -65,14 +83,14 @@
         }
 
         /**
-         * Autodesk.Viewing.Document.load() failuire callback.
+         * Autodesk.Viewing.Document.load() failure callback.
          */
         function onDocumentLoadFailure(viewerErrorCode) {
             console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
         }
 
         /**
-         * viewer.loadModel() success callback.
+          * viewer.loadModel() success callback.
          * Invoked after the model's SVF has been initially loaded.
          * It may trigger before any geometry has been downloaded and displayed on-screen.
          */
