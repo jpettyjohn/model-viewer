@@ -1,8 +1,27 @@
-const Viewer = () => {
+import React from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
 
+const Viewer = () => {
     return (
-        <div></div>
+        <div style={{ padding: "20px" }}>
+            <Container>
+                <h4 style={{ textAlign: "center" }}>Site Name</h4>
+                <Row className="justify-content-center">
+                    <Col xs={12} sm={6}>
+                        <Card>
+                            {/* Add your image component here */}
+                            <Card.Img
+                                variant="top"
+                                // src={/*an image*/}
+                                alt="Description of the image"
+                                style={{ maxWidth: "100%" }}
+                            />
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
-}
+};
 
 export default Viewer;

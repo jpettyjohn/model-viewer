@@ -6,15 +6,14 @@ import Viewer from './pages/Viewer';
 import Home from './pages/Home';
 import logo from './logo.svg';
 import './App.css';
-
+//<Route path="/viewer" Component={Viewer} />
 function App() {
   return (
     <Router>
       <Container>
         <NavBarComponent />
         <Routes>
-          <Route path="/viewer" Component={Viewer} />
-          <Route path="/" Component={Home} />
+          <Route path="/" Component={Viewer} />
         </Routes>
       </Container>
     </Router>
