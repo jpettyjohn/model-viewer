@@ -1,10 +1,11 @@
-import { Button } from 'react-bootstrap';
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import UploadButton from '../components/UploadButton';
 
 const Home = () => {
-
     return (
         <div class="home-main">
-            <Button variant="secondary">Secondary</Button>{' '}
+            <UploadButton></UploadButton>
         </div>
     );
 }
