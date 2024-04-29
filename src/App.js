@@ -6,7 +6,7 @@ import Viewer from './pages/Viewer';
 import Home from './pages/Home';
 import logo from './logo.svg';
 import './App.css';
-//<Route path="/viewer" Component={Viewer} />
+
 function App() {
 
   const containerStyle = { 
@@ -22,11 +22,13 @@ function App() {
       <NavBarComponent />
       <Container fluid style={containerStyle}>
         <Routes>
-          <Route path="/" Component={Viewer} />
+          <Route path="/" Component={Home } />
+          <Route path="/viewer" Component={Viewer} />
         </Routes>
       </Container>
     </Router>
   );
 }
+
 
 export default App;
