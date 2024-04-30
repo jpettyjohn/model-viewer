@@ -5,6 +5,7 @@ import axios from 'axios';
 function UploadButton() {
     
     const [selectedFile, setSelectedFile] = useState(null);
+    const [uploadedFile, setUploadedFile] = useState(null);
 
     const handleFileChange = (event) => {
         // Get the selected file
@@ -32,7 +33,9 @@ function UploadButton() {
             //         console.error('Error uploading file:', error);
             //         // Handle error
             //     });
+
           setSelectedFile(null);
+          setUploadedFile(true);
         } else {
           console.log('No file selected');
         }
@@ -40,8 +43,8 @@ function UploadButton() {
     
     const handleButtonClick = () => {
         document.getElementById('fileInput').click();
+        setUploadedFile(false);
     };
-
 
     return (
         <div class="upload-button-main">
@@ -62,12 +65,14 @@ function UploadButton() {
                         onClick={handleButtonClick}
                         accept=".rvt"
                     />{' '}
+                    <div class="upload-selected-file">
+                        {selectedFile && <p class=''>Selected file: {selectedFile.name}</p>}
+                        {!selectedFile && <p style={{color: 'transparent'}}>Selected File: </p>}
+                    </div>
                 </div>
-                <div>
-                    <Button variant="primary" onClick={handleUpload}>Upload</Button>{' '}
-                </div>
-                <div>
-                    {selectedFile && <p>Selected file: {selectedFile.name}</p>}
+                <div class="upload-button-button">
+                    <Button variant="primary" type="submit" onClick={handleUpload}>Upload</Button>{' '}
+                    {uploadedFile && <p style={{color: 'rgb(127, 252, 3)', width: '50%', whiteSpace: 'normal'}}>Upload Successful</p>}
                 </div>
             </div>
         </div>

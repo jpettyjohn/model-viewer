@@ -27,12 +27,27 @@
   width:60%;
 }
 
+.viewer-main {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewer-container { 
+  display:flex;
+  justify-content: center;
+  text-align: center;
+  height: 40vh; 
+  width: 80%; 
+}
+
 .upload-button-main { 
   display:flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 30vh;
+  height: 35vh;
   width: 100%;
 }
 
@@ -42,15 +57,34 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: 1vh;
+  gap: 0.5vh;
   height: 20vh;
-  border: 1px solid #ccc; /* Just for demonstration */
-  width: 50%;
+  /* border: 1px solid #ccc; Just for demonstration */
+  width: 40%;
+  background-color: rgb(134, 134, 135);
 }
 
 .upload-button-input { 
   display:flex;
   justify-content: center;
-  gap: 10vw;
+  align-items: center;
+  gap: 2.5vw;
+  padding: 5px;
   width:100%;
+
+}
+
+.upload-button-button {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%; 
+  padding-left: 5vw;
+}
+
+.upload-selected-file{ 
+  /* white-space: 'normal'; */
+  width: 60%;
+  height: 50%;
+  font-size: 0.8em;
+  border: 1px solid #000
 }
