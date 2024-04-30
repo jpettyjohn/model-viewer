@@ -20,6 +20,7 @@ const auth = async () => {
       
       // Use the access token for further operations
       console.log('Access Token:', accessToken);
+      return accessToken;
     } else {
       // Handle error response
       console.error('Error:', response.statusText);
