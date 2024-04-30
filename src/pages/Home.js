@@ -5,7 +5,9 @@ import UploadButton from '../components/UploadButton';
 const Home = () => {
     return (
         <div class="home-main">
-            <UploadButton></UploadButton>
+            <h4>Home Page</h4>
+            <div class="home-container">
+            </div>
         </div>
     );
 }
