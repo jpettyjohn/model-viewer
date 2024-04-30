@@ -22,7 +22,7 @@ function App() {
       <NavBarComponent />
       <Container fluid style={containerStyle}>
         <Routes>
-          <Route path="/" Component={Home } />
+          <Route path="/" Component={Home} />
           <Route path="/viewer" Component={Viewer} />
         </Routes>
       </Container>
