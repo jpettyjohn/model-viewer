@@ -7,17 +7,25 @@ import Home from './pages/Home';
 import logo from './logo.svg';
 import './App.css';
 function App() {
+
+  const containerStyle = { 
+    backgroundColor: 'rgb(106, 113, 125)',
+    color: 'white',
+    minHeight: '100vh',
+    width: '100%',
+    padding: '0',
+  }
+
   return (
     <Router>
-      <Container>
-        <NavBarComponent />
+      <NavBarComponent />
+      <Container fluid style={containerStyle}>
         <Routes>
-          <Route path="/viewer" Component={Viewer} />
-          <Route path="/" Component={Home} />
         </Routes>
       </Container>
     </Router>
   );
 }
+
 
 export default App;

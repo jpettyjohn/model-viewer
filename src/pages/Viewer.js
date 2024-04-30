@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import UploadButton from "../components/UploadButton";
 
 const Viewer = () => {
     return (
+        /* Id like to change the styling to use app.css */
         <div style={{ padding: "20px" }}>
             <Container>
                 <h4 style={{ textAlign: "center" }}>Site Name</h4>
@@ -18,6 +20,7 @@ const Viewer = () => {
                             />
                         </Card>
                     </Col>
+                    <UploadButton/>
                 </Row>
             </Container>
         </div>

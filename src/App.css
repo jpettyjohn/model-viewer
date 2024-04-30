@@ -10,3 +10,47 @@
   display:flex;
   gap: 2em;
 }
+
+/*Home page main */
+.home-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Horizontally centers items */
+  align-items: center; /* Vertically centers items */ /* Just for demonstration */
+  padding: 20px
+}
+
+.home-container { 
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width:60%;
+}
+
+.upload-button-main { 
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+  width: 100%;
+}
+
+.upload-button-container { 
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1vh;
+  height: 20vh;
+  border: 1px solid #ccc; /* Just for demonstration */
+  width: 50%;
+}
+
+.upload-button-input { 
+  display:flex;
+  justify-content: center;
+  gap: 10vw;
+  width:100%;
+}
