@@ -17,6 +17,10 @@
             background-color: #F0F8FF;
         }
     </style>
+      <!-- Autodesk Forge Viewer -->
+      <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/three.min.js"></script>
+      <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+  
 </head>
 <body>
 
@@ -26,14 +30,11 @@
         <button id="MyNextButton" onClick="loadNextModel()">Next!</button>
     </div>
 
-    <!-- The Viewer JS -->
-    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/4.*/three.min.js"></script>
-    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/4.*/viewer3D.min.js"></script>
 
     <!-- Developer JS -->
     <script>
         var viewer;
-        var options = {
+        /*var options = {
             env: 'AutodeskProduction',
             getAccessToken: function(onGetAccessToken) {
                 //
@@ -47,8 +48,8 @@
                 //    "expires_in": 86400
                 // }
                 //
-                var accessToken = 'HZlGdBAqASvNCStCwX1itSFkyiaiyqA5Azz6NEO7WnuddlZ29rNhsOVTOyFvThMI';
-                var expireTimeSeconds = 86400;
+                //var accessToken = 'HZlGdBAqASvNCStCwX1itSFkyiaiyqA5Azz6NEO7WnuddlZ29rNhsOVTOyFvThMI';
+                //var expireTimeSeconds = 86400;
                 onGetAccessToken(accessToken, expireTimeSeconds);
             }
         }
@@ -60,7 +61,7 @@
         /**
         * Autodesk.Viewing.Document.load() success callback.
         * Proceeds with model initialization.
-        */
+        
         function onDocumentLoadSuccess(doc) {
 
             // A document contains references to 3D and 2D viewables.
@@ -84,7 +85,7 @@
 
         /**
          * Autodesk.Viewing.Document.load() failure callback.
-         */
+         
         function onDocumentLoadFailure(viewerErrorCode) {
             console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
         }
@@ -93,7 +94,7 @@
           * viewer.loadModel() success callback.
          * Invoked after the model's SVF has been initially loaded.
          * It may trigger before any geometry has been downloaded and displayed on-screen.
-         */
+         
         function onLoadModelSuccess(model) {
             console.log('onLoadModelSuccess()!');
             console.log('Validate model loaded: ' + (viewer.model === model));
@@ -103,10 +104,10 @@
         /**
          * viewer.loadModel() failure callback.
          * Invoked when there's an error fetching the SVF file.
-         */
+         
         function onLoadModelError(viewerErrorCode) {
             console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-        }
+        }*/
 
     </script>
 </body>

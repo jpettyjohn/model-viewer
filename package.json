@@ -20,6 +20,7 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "dependencies": {
+    "@types/forge-viewer": "^7.69.9",
     "cors": "^2.8.5",
     "express": "^4.17.2"
   }

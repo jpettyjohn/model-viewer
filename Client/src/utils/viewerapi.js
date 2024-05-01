@@ -1,53 +1,44 @@
-import React, { useEffect } from 'react';
 
-const MyViewer = () => {
-  useEffect(() => {
-    const options = {
-      env: 'AutodeskProduction',
-      accessToken: '<YOUR_APPLICATION_TOKEN>'
-    };
-    const documentId = 'urn:<YOUR_URN_ID>';
-    
-    Autodesk.Viewing.Initializer(options, function onInitialized(){
-      Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+
+async function getAccessToken(callback) {
+    const resp = await fetch('http://localhost:8010/api/auth/token');
+    if (!resp.ok) {
+      throw new Error(await resp.text());
+    }
+    const { access_token, expires_in } = await resp.json();
+    // Callback with access token and expiration
+    callback(access_token, expires_in);
+  } 
+
+// Function to initialize viewer
+export function initViewer(container) {
+  return new Promise(function (resolve, reject) {
+    // Call getAccessToken to retrieve access token
+    getAccessToken(function(access_token, expires_in) {
+      console.log(access_token);
+      // Initialize viewer after retrieving access token
+      Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', access_token:access_token }, function () {
+        const config = {
+          extensions: ['Autodesk.DocumentBrowser']
+        };
+        const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
+        viewer.start();
+        viewer.setTheme('light-theme');
+        // Resolve promise with viewer instance
+        resolve(viewer);
+      });
     });
-
-    function onDocumentLoadSuccess(doc) {
-      const viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
-      if (viewables.length === 0) {
-        console.error('Document contains no viewables.');
-        return;
+  });
+}
+export function loadModel(viewer, urn) {
+  return new Promise(function (resolve, reject) {
+      function onDocumentLoadSuccess(doc) {
+          resolve(viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry()));
       }
-
-      const initialViewable = viewables[0];
-      const svfUrl = doc.getViewablePath(initialViewable);
-      const modelOptions = {
-        sharedPropertyDbPath: doc.getPropertyDbPath()
-      };
-
-      const viewerDiv = document.getElementById('MyViewerDiv');
-      const viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-      viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
-    }
-
-    function onDocumentLoadFailure(viewerErrorCode) {
-      console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
-    }
-
-    function onLoadModelSuccess(model) {
-      console.log('onLoadModelSuccess()!');
-      console.log('Validate model loaded: ' + (viewer.model === model));
-      console.log(model);
-    }
-
-    function onLoadModelError(viewerErrorCode) {
-      console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
-    }
-  }, []);
-
-  return (
-    <div id="MyViewerDiv" style={{ width: '100%', height: '100%', backgroundColor: '#F0F8FF' }}></div>
-  );
-};
-
-export default MyViewer;
+      function onDocumentLoadFailure(code, message, errors) {
+          reject({ code, message, errors });
+      }
+      viewer.setLightPreset(0);
+      Autodesk.Viewing.Document.load('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
+  });
+}
