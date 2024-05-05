@@ -1,11 +1,15 @@
-Make wireframe
-    Navbar
-    Upload button section
-        displays upload successfully
+Make wireframe - done
+Navbar
+Upload button section
+-upload section - done
+-upload logic -
 
+Making a sites page - displays all sites uploaded - displays them in a grid - can click on a card
+-brings you to the viewer
+
+Making a site component
 
 Features to be made
-    Isolating a room in a site for ease of access
-    search function
-    database of sites to look at in viewer
-    
+Isolating a room in a site for ease of access
+search function
+database of sites to look at in viewer
