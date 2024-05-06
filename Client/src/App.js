@@ -5,6 +5,7 @@ import NavBarComponent from "./components/NavBarComponent";
 import Viewer from "./pages/Viewer";
 import Home from "./pages/Home";
 import Sites from "./pages/Sites";
+import Auth from "./utils/auth";
 import "./App.css";
 
 function App() {
