@@ -1,34 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { initViewer, loadModel } from "../utils/viewerapi.js";
+import UploadButton from "./UploadButton.js";
 
 const ViewerComponent = () => {
 	const [viewer, setViewer] = useState(null);
 	const [selectedUrn, setSelectedUrn] = useState(null);
+	let isMounted = true;
 
 	useEffect(() => {
-		initViewer(document.getElementById("preview")).then((viewer) => {
-			setViewer(viewer);
-			const urn = window.location.hash?.substring(1);
-			setSelectedUrn(urn);
-			setupModelSelection(viewer, urn);
-			setupModelUpload(viewer);
-		});
+		if (isMounted) {
+			//console.log("test", isMounted);
+			initViewer(document.getElementById("preview")).then((viewer) => {
+				setViewer(viewer);
+				const urn = window.location.hash?.substring(1);
+				setSelectedUrn(urn);
+				setupModelSelection(viewer, urn);
+				setupModelUpload(viewer);
+			});
+		}
+		return () => {
+			isMounted = false; // Set the flag to false when unmounting
+		};
 	}, []);
 
 	const setupModelSelection = async (viewer, selectedUrn) => {
 		const dropdown = document.getElementById("models");
 		dropdown.innerHTML = "";
 		try {
-			const resp = await fetch("/api/models");
+			const resp = await fetch("http://localhost:8010/api/models");
 			if (!resp.ok) {
 				throw new Error(await resp.text());
 			}
 			const models = await resp.json();
-			dropdown.innerHTML = models.map((model) => (
-				<option key={model.urn} value={model.urn} selected={model.urn === selectedUrn}>
-					{model.name}
-				</option>
-			));
+			console.log(models);
+			dropdown.innerHTML = models
+				.map(
+					(model) =>
+						`<option key="${model.urn}" value="${model.urn}" ${model.urn === selectedUrn ? "selected" : ""}>${
+							model.name
+						}</option>`
+				)
+				.join("");
 			dropdown.onchange = () => onModelSelected(viewer, dropdown.value);
 			if (dropdown.value) {
 				onModelSelected(viewer, dropdown.value);
@@ -56,7 +68,7 @@ const ViewerComponent = () => {
 			models.setAttribute("disabled", "true");
 			showNotification(`Uploading model <em>${file.name}</em>. Do not reload the page.`);
 			try {
-				const resp = await fetch("/api/models", {
+				const resp = await fetch("http://localhost:8010/api/models", {
 					method: "POST",
 					body: data,
 				});
@@ -84,7 +96,7 @@ const ViewerComponent = () => {
 		}
 		window.location.hash = urn;
 		try {
-			const resp = await fetch(`/api/models/${urn}/status`);
+			const resp = await fetch(`http://localhost:8010/api/models/${urn}/status`);
 			if (!resp.ok) {
 				throw new Error(await resp.text());
 			}
@@ -128,14 +140,17 @@ const ViewerComponent = () => {
 	};
 
 	return (
-		<div>
-			<div id="preview"></div>
-			<div>
-				<select id="models"></select>
-				<input type="file" id="input" style={{ display: "none" }} />
-				<button id="upload">Upload Model</button>
+		<div className="viewercomponent-main">
+			<div className="viewercomponent-container">
+				<div id="preview"></div>
+				<div>
+					<select id="models"></select>
+					<input type="file" id="input" style={{ display: "none" }} />
+					<button id="upload">Upload Model</button>
+				</div>
+				<div id="overlay"></div>
 			</div>
-			<div id="overlay"></div>
+			<UploadButton />
 		</div>
 	);
 };

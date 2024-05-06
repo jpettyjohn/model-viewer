@@ -14,16 +14,6 @@ function UploadButton() {
 		setSelectedFile(file);
 	};
 
-	const getAccessToken = async (callback) => {
-		const resp = await fetch("http://localhost:8010/api/auth/token");
-		if (!resp.ok) {
-			throw new Error(await resp.text());
-		}
-		const { access_token, expires_in } = await resp.json();
-		// Callback with access token and expiration
-		callback(access_token, expires_in);
-	};
-
 	const postModelFile = async (formData) => {
 		getAccessToken(async function (access_token, expires_in) {
 			console.log(access_token);
@@ -54,7 +44,7 @@ function UploadButton() {
 			//post to autodesk servers
 			//Must create a unique name for the file everytime
 			//user specifies name or random generator
-			setSelectedName("Test");
+			setSelectedName("file");
 			setSelectedFile(null);
 			setUploadedFile(true);
 		} else {

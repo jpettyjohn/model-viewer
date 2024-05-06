@@ -15,7 +15,7 @@ export function initViewer(container) {
 		getAccessToken(function (access_token, expires_in) {
 			console.log(access_token);
 			// Initialize viewer after retrieving access token
-			Autodesk.Viewing.Initializer({ env: "AutodeskProduction", access_token: access_token }, function () {
+			Autodesk.Viewing.Initializer({ env: "AutodeskProduction", accessToken: access_token }, function () {
 				const config = {
 					extensions: ["Autodesk.DocumentBrowser"],
 				};
