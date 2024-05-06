@@ -2,24 +2,27 @@ import React, { useEffect, useState } from "react";
 import { initViewer, loadModel } from "../utils/viewerapi.js";
 
 const ViewerComponent = () => {
-	const [viewer, setViewer] = useState(null);
-	const [selectedUrn, setSelectedUrn] = useState(null);
+    const [viewer, setViewer] = useState(null);
+    const [selectedUrn, setSelectedUrn] = useState(null);
+    const [models, setModels] = useState([]);
+    const [notification, setNotification] = useState('');
+    const [overlayDisplay, setOverlayDisplay] = useState('none');
 
-	useEffect(() => {
-		initViewer(document.getElementById("preview")).then((viewer) => {
-			setViewer(viewer);
-			const urn = window.location.hash?.substring(1);
-			setSelectedUrn(urn);
-			setupModelSelection(viewer, urn);
-			setupModelUpload(viewer);
-		});
-	}, []);
+    useEffect(() => {
+        initViewer(document.getElementById("preview")).then((viewer) => {
+            setViewer(viewer);
+            const urn = window.location.hash?.substring(1);
+            setSelectedUrn(urn);
+            setupModelSelection(viewer, urn);
+            setupModelUpload(viewer);
+        });
+    }, []);
 
 	const setupModelSelection = async (viewer, selectedUrn) => {
 		const dropdown = document.getElementById("models");
 		dropdown.innerHTML = "";
 		try {
-			const resp = await fetch("/api/models");
+			const resp = await fetch("http://localhost:8010/api/models");
 			if (!resp.ok) {
 				throw new Error(await resp.text());
 			}
@@ -56,7 +59,7 @@ const ViewerComponent = () => {
 			models.setAttribute("disabled", "true");
 			showNotification(`Uploading model <em>${file.name}</em>. Do not reload the page.`);
 			try {
-				const resp = await fetch("/api/models", {
+				const resp = await fetch("http://localhost:8010/api/models", {
 					method: "POST",
 					body: data,
 				});
@@ -84,7 +87,7 @@ const ViewerComponent = () => {
 		}
 		window.location.hash = urn;
 		try {
-			const resp = await fetch(`/api/models/${urn}/status`);
+			const resp = await fetch(`http://localhost:8010/api/models/${urn}/status`);
 			if (!resp.ok) {
 				throw new Error(await resp.text());
 			}
@@ -127,17 +130,25 @@ const ViewerComponent = () => {
 		overlay.style.display = "none";
 	};
 
-	return (
-		<div>
-			<div id="preview"></div>
-			<div>
-				<select id="models"></select>
-				<input type="file" id="input" style={{ display: "none" }} />
-				<button id="upload">Upload Model</button>
-			</div>
-			<div id="overlay"></div>
-		</div>
-	);
-};
+    return (
+        <body>
+            <div id="header">
+                <img className="logo" src="https://cdn.autodesk.io/logo/black/stacked.png" alt="Autodesk Platform Services" />
+                <span className="title">Simple Viewer</span>
+                <select name="models" id="models" value={selectedUrn} onChange={(e) => onModelSelected(viewer, e.target.value)}>
+                    {models.map(model => (
+                        <option key={model.urn} value={model.urn}>{model.name}</option>
+                    ))}
+                </select>
+                <button id="upload" title="Upload New Model">Upload</button>
+                <input style={{ display: 'none' }} type="file" id="input" />
+            </div>
+            <div id="preview"></div>
+            <div id="overlay" style={{ display: overlayDisplay }}>
+                <div className="notification">{notification}</div>
+            </div>
+        </body>
+    );
+}
 
 export default ViewerComponent;
