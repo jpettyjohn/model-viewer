@@ -10,7 +10,6 @@ const Viewer = () => {
 			<div className="viewer-container">
 				<ViewerComponent />
 			</div>
-			<UploadButton />
 		</div>
 	);
 };

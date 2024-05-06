@@ -1,142 +1,153 @@
-.navbar-main { 
-  display:flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 5vw;
-  width: 100%;
-  /* margin-bottom: 5em; */
+.navbar-main {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding-left: 5vw;
+	width: 100%;
+	/* margin-bottom: 5em; */
 }
 
-.navbar-container { 
-  display:flex;
-  gap: 2vw;
-}
-
-.navbar-logo-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.navbar-logo {
-  width: 8vh;
-  height: auto;
-  border-radius: 30%;
-}
-
-.navlink {
-  font-size: 1em;
-  font-style: normal;
-  text-decoration: none;
-  color: rgb(255, 255, 255);
-}
-
-.navlink:hover{
-  color:#1a5be7;
-  cursor: pointer;
+.navbar-container {
+	display: flex;
+	gap: 2vw;
 }
 
 .navbar-logo-container {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .navbar-logo {
-  width: 8vh;
-  height: auto;
-  border-radius: 30%;
+	width: 8vh;
+	height: auto;
+	border-radius: 30%;
 }
 
 .navlink {
-  font-size: 1em;
-  font-style: normal;
-  text-decoration: none;
-  color: rgb(255, 255, 255);
+	font-size: 1em;
+	font-style: normal;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
 }
 
-.navlink:hover{
-  color:#1a5be7;
-  cursor: pointer;
+.navlink:hover {
+	color: #1a5be7;
+	cursor: pointer;
+}
+
+.navbar-logo-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.navbar-logo {
+	width: 8vh;
+	height: auto;
+	border-radius: 30%;
+}
+
+.navlink {
+	font-size: 1em;
+	font-style: normal;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+}
+
+.navlink:hover {
+	color: #1a5be7;
+	cursor: pointer;
 }
 
 /*Home page main */
 .home-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Horizontally centers items */
-  align-items: center; /* Vertically centers items */ /* Just for demonstration */
-  padding: 20px
+	display: flex;
+	flex-direction: column;
+	justify-content: center; /* Horizontally centers items */
+	align-items: center; /* Vertically centers items */ /* Just for demonstration */
+	padding: 20px;
 }
 
-.home-container { 
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  width:60%;
+.home-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 60%;
 }
 
 .viewer-main {
-  display: flex;
-  flex-direction:column;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
-.viewer-container { 
-  display:flex;
-  justify-content: center;
-  text-align: center;
-  height: 40vh; 
-  width: 80%; 
+.viewer-container {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	height: 40vh;
+	width: 80%;
 }
 
-.upload-button-main { 
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 35vh;
-  width: 100%;
+.upload-button-main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 35vh;
+	width: 100%;
 }
 
-.upload-button-container { 
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 0.5vh;
-  height: 20vh;
-  /* border: 1px solid #ccc; Just for demonstration */
-  width: 40%;
-  background-color: rgb(134, 134, 135);
+.upload-button-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	gap: 0.5vh;
+	height: 15vh;
+	/* border: 1px solid #ccc; Just for demonstration */
+	width: 40%;
 }
 
-.upload-button-input { 
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2.5vw;
-  padding: 5px;
-  width:100%;
-
+.upload-button-input {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2.5vw;
+	padding: 5px;
+	width: 100%;
 }
 
 .upload-button-button {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%; 
-  padding-left: 5vw;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	padding-left: 3vw;
 }
 
-.upload-selected-file { 
-  /* white-space: 'normal'; */
-  width: 60%;
-  height: 50%;
-  font-size: 0.8em;
-  border: 1px solid #000
+.upload-selected-file {
+	/* white-space: 'normal'; */
+	width: 60%;
+	height: 50%;
+	font-size: 0.8em;
+	border: 1px solid #000;
 }
 
 .sites-main {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
+}
+
+.viewercomponent-main {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.viewercomponent-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }

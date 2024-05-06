@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { initViewer, loadModel } from "../utils/viewerapi.js";
+import UploadButton from "./UploadButton.js";
 
 const ViewerComponent = () => {
-    const [viewer, setViewer] = useState(null);
-    const [selectedUrn, setSelectedUrn] = useState(null);
-    const [models, setModels] = useState([]);
-    const [notification, setNotification] = useState('');
-    const [overlayDisplay, setOverlayDisplay] = useState('none');
+	const [viewer, setViewer] = useState(null);
+	const [selectedUrn, setSelectedUrn] = useState(null);
+	let isMounted = true;
 
-    useEffect(() => {
-        initViewer(document.getElementById("preview")).then((viewer) => {
-            setViewer(viewer);
-            const urn = window.location.hash?.substring(1);
-            setSelectedUrn(urn);
-            setupModelSelection(viewer, urn);
-            setupModelUpload(viewer);
-        });
-    }, []);
+	useEffect(() => {
+		if (isMounted) {
+			//console.log("test", isMounted);
+			initViewer(document.getElementById("preview")).then((viewer) => {
+				setViewer(viewer);
+				const urn = window.location.hash?.substring(1);
+				setSelectedUrn(urn);
+				setupModelSelection(viewer, urn);
+				setupModelUpload(viewer);
+			});
+		}
+		return () => {
+			isMounted = false; // Set the flag to false when unmounting
+		};
+	}, []);
 
 	const setupModelSelection = async (viewer, selectedUrn) => {
 		const dropdown = document.getElementById("models");
@@ -27,11 +32,15 @@ const ViewerComponent = () => {
 				throw new Error(await resp.text());
 			}
 			const models = await resp.json();
-			dropdown.innerHTML = models.map((model) => (
-				<option key={model.urn} value={model.urn} selected={model.urn === selectedUrn}>
-					{model.name}
-				</option>
-			));
+			console.log(models);
+			dropdown.innerHTML = models
+				.map(
+					(model) =>
+						`<option key="${model.urn}" value="${model.urn}" ${model.urn === selectedUrn ? "selected" : ""}>${
+							model.name
+						}</option>`
+				)
+				.join("");
 			dropdown.onchange = () => onModelSelected(viewer, dropdown.value);
 			if (dropdown.value) {
 				onModelSelected(viewer, dropdown.value);
@@ -130,25 +139,20 @@ const ViewerComponent = () => {
 		overlay.style.display = "none";
 	};
 
-    return (
-        <body>
-            <div id="header">
-                <img className="logo" src="https://cdn.autodesk.io/logo/black/stacked.png" alt="Autodesk Platform Services" />
-                <span className="title">Simple Viewer</span>
-                <select name="models" id="models" value={selectedUrn} onChange={(e) => onModelSelected(viewer, e.target.value)}>
-                    {models.map(model => (
-                        <option key={model.urn} value={model.urn}>{model.name}</option>
-                    ))}
-                </select>
-                <button id="upload" title="Upload New Model">Upload</button>
-                <input style={{ display: 'none' }} type="file" id="input" />
-            </div>
-            <div id="preview"></div>
-            <div id="overlay" style={{ display: overlayDisplay }}>
-                <div className="notification">{notification}</div>
-            </div>
-        </body>
-    );
-}
+	return (
+		<div className="viewercomponent-main">
+			<div className="viewercomponent-container">
+				<div id="preview"></div>
+				<div>
+					<select id="models"></select>
+					<input type="file" id="input" style={{ display: "none" }} />
+					<button id="upload">Upload Model</button>
+				</div>
+				<div id="overlay"></div>
+			</div>
+			<UploadButton />
+		</div>
+	);
+};
 
 export default ViewerComponent;

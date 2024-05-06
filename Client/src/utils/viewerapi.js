@@ -1,4 +1,4 @@
-async function getAccessToken(callback) {
+export async function getAccessToken(callback) {
 	const resp = await fetch("http://localhost:8010/api/auth/token");
 	if (!resp.ok) {
 		throw new Error(await resp.text());
@@ -15,22 +15,16 @@ export function initViewer(container) {
 		getAccessToken(function (access_token, expires_in) {
 			console.log(access_token);
 			// Initialize viewer after retrieving access token
-			Autodesk.Viewing.Initializer(
-				{ env: "AutodeskProduction", access_token: access_token },
-				function () {
-					const config = {
-						extensions: ["Autodesk.DocumentBrowser"],
-					};
-					const viewer = new Autodesk.Viewing.GuiViewer3D(
-						container,
-						config
-					);
-					viewer.start();
-					viewer.setTheme("light-theme");
-					// Resolve promise with viewer instance
-					resolve(viewer);
-				}
-			);
+			Autodesk.Viewing.Initializer({ env: "AutodeskProduction", accessToken: access_token }, function () {
+				const config = {
+					extensions: ["Autodesk.DocumentBrowser"],
+				};
+				const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
+				viewer.start();
+				viewer.setTheme("light-theme");
+				// Resolve promise with viewer instance
+				resolve(viewer);
+			});
 		});
 	});
 }
@@ -38,18 +32,12 @@ export function initViewer(container) {
 export function loadModel(viewer, urn) {
 	return new Promise(function (resolve, reject) {
 		function onDocumentLoadSuccess(doc) {
-			resolve(
-				viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry())
-			);
+			resolve(viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry()));
 		}
 		function onDocumentLoadFailure(code, message, errors) {
 			reject({ code, message, errors });
 		}
 		viewer.setLightPreset(0);
-		Autodesk.Viewing.Document.load(
-			"urn:" + urn,
-			onDocumentLoadSuccess,
-			onDocumentLoadFailure
-		);
+		Autodesk.Viewing.Document.load("urn:" + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
 	});
 }
