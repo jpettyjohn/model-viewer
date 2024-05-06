@@ -15,16 +15,19 @@ export function initViewer(container) {
 		getAccessToken(function (access_token, expires_in) {
 			console.log(access_token);
 			// Initialize viewer after retrieving access token
-			Autodesk.Viewing.Initializer({ env: "AutodeskProduction", accessToken: access_token }, function () {
-				const config = {
-					extensions: ["Autodesk.DocumentBrowser"],
-				};
-				const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
-				viewer.start();
-				viewer.setTheme("light-theme");
-				// Resolve promise with viewer instance
-				resolve(viewer);
-			});
+			Autodesk.Viewing.Initializer(
+				{ env: "AutodeskProduction", accessToken: access_token, height: "50%", width: "50%" },
+				function () {
+					const config = {
+						extensions: ["Autodesk.DocumentBrowser"],
+					};
+					const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
+					viewer.start();
+					viewer.setTheme("light-theme");
+					// Resolve promise with viewer instance
+					resolve(viewer);
+				}
+			);
 		});
 	});
 }

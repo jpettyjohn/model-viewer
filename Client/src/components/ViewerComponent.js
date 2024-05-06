@@ -10,7 +10,7 @@ const ViewerComponent = () => {
 	useEffect(() => {
 		if (isMounted) {
 			//console.log("test", isMounted);
-			initViewer(document.getElementById("preview")).then((viewer) => {
+			initViewer(document.getElementById("viewercomponent-id")).then((viewer) => {
 				setViewer(viewer);
 				const urn = window.location.hash?.substring(1);
 				setSelectedUrn(urn);
@@ -141,16 +141,15 @@ const ViewerComponent = () => {
 
 	return (
 		<div className="viewercomponent-main">
-			<div className="viewercomponent-container">
-				<div id="preview"></div>
+			<div className="viewercomponent-container" id="viewercomponent-id">
 				<div>
 					<select id="models"></select>
 					<input type="file" id="input" style={{ display: "none" }} />
 					<button id="upload">Upload Model</button>
 				</div>
-				<div id="overlay"></div>
 			</div>
-			<UploadButton />
+			{/* <UploadButton /> */}
+			<div id="overlay"></div>
 		</div>
 	);
 };
