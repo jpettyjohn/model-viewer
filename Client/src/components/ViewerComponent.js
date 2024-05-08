@@ -141,12 +141,12 @@ const ViewerComponent = () => {
 
 	return (
 		<div className="viewercomponent-main">
-			<div className="viewercomponent-container" id="viewercomponent-id">
 				<div>
 					<select id="models"></select>
 					<input type="file" id="input" style={{ display: "none" }} />
 					<button id="upload">Upload Model</button>
 				</div>
+				<div className="viewercomponent-container" id="viewercomponent-id">
 			</div>
 			{/* <UploadButton /> */}
 			<div id="overlay"></div>
