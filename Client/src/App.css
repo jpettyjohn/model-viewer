@@ -146,12 +146,11 @@
 
 .viewercomponent-container {
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
+	text-align: center; 
+	height: 10vh;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto; 
 }
 
-.clickoff {
-	display: none;
-	pointer-events: none;
-	padding: 5vh;
-}
