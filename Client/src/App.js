@@ -12,7 +12,7 @@ function App() {
 	const containerStyle = {
 		backgroundColor: "rgb(106, 113, 125)",
 		color: "white",
-		minHeight: "200vh",
+		minHeight: "90vh",
 		width: "100%",
 		paddingTop: "2vh",
 	};

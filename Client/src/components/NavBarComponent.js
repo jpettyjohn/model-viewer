@@ -9,23 +9,14 @@ const NavbarComponent = () => {
 			<div className="navbar-main">
 				<div className="navbar-logo-container">
 					<Navbar.Brand as={NavLink} to="/">
-						<img
-							className="navbar-logo"
-							src={Logo}
-							alt="This is the logo"></img>
+						<img className="navbar-logo" src={Logo} alt="This is the logo"></img>
 					</Navbar.Brand>
 				</div>
 				<div className="navbar-container">
-					<NavLink
-						to="/viewer"
-						className="inactive navlink"
-						activeClassName="active">
+					<NavLink to="/viewer" className="inactive navlink" activeClassName="active">
 						Viewer
 					</NavLink>
-					<NavLink
-						to="/sites"
-						className="inactive navlink"
-						activeClassName="active">
+					<NavLink to="/sites" className="inactive navlink" activeClassName="active">
 						Sites
 					</NavLink>
 				</div>
