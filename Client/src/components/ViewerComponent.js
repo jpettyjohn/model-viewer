@@ -10,7 +10,7 @@ const ViewerComponent = () => {
 	useEffect(() => {
 		if (isMounted) {
 			//console.log("test", isMounted);
-			initViewer(document.getElementById("viewercomponent-id")).then((viewer) => {
+			initViewer(document.getElementById("viewercomponent-container")).then((viewer) => {
 				setViewer(viewer);
 				const urn = window.location.hash?.substring(1);
 				setSelectedUrn(urn);
@@ -18,8 +18,20 @@ const ViewerComponent = () => {
 				setupModelUpload(viewer);
 			});
 		}
+
+		const handleResize = () => {
+			// Update viewer dimensions based on container size
+			if (window.viewer) {
+				// Assuming `window.viewer` references the viewer instance
+				window.viewer.resize();
+			}
+		};
+
+		window.addEventListener("resize", handleResize);
+
 		return () => {
 			isMounted = false; // Set the flag to false when unmounting
+			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
 
@@ -36,9 +48,9 @@ const ViewerComponent = () => {
 			dropdown.innerHTML = models
 				.map(
 					(model) =>
-						`<option key="${model.urn}" value="${model.urn}" ${model.urn === selectedUrn ? "selected" : ""}>${
-							model.name
-						}</option>`
+						`<option key="${model.urn}" value="${model.urn}" ${
+							model.urn === selectedUrn ? "selected" : ""
+						}>${model.name}</option>`
 				)
 				.join("");
 			dropdown.onchange = () => onModelSelected(viewer, dropdown.value);
@@ -61,7 +73,9 @@ const ViewerComponent = () => {
 			let data = new FormData();
 			data.append("model-file", file);
 			if (file.name.endsWith(".zip")) {
-				const entrypoint = window.prompt("Please enter the filename of the main design inside the archive.");
+				const entrypoint = window.prompt(
+					"Please enter the filename of the main design inside the archive."
+				);
 				data.append("model-zip-entrypoint", entrypoint);
 			}
 			upload.setAttribute("disabled", "true");
@@ -141,13 +155,12 @@ const ViewerComponent = () => {
 
 	return (
 		<div className="viewercomponent-main">
-				<div>
-					<select id="models"></select>
-					<input type="file" id="input" style={{ display: "none" }} />
-					<button id="upload">Upload Model</button>
-				</div>
-				<div className="viewercomponent-container" id="viewercomponent-id">
+			<div>
+				<select id="models"></select>
+				<input type="file" id="input" style={{ display: "none" }} />
+				<button id="upload">Upload Model</button>
 			</div>
+			<div id="viewercomponent-container"></div>
 			{/* <UploadButton /> */}
 			<div id="overlay"></div>
 		</div>

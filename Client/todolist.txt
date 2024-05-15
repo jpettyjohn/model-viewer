@@ -1,0 +1,35 @@
+Site name on viewer page
+Making a sites page - displays all sites uploaded - displays them in a grid - can click on a card
+-brings you to the viewer
+
+Make a site component
+
+
+Meeting 2 features
+---------------------
+.nwc or nwd - done
+drop down for different rooms - using navix files to seperate rooms
+navix works functionality for different rooms
+interface on tablet
+
+
+
+Future features
+------------
+Isolating a room in a site for ease of access
+search function
+database of sites to look at in viewer
+
+
+Passive Features
+-------------------
+Make the application prettier
+
+
+
+Bugs
+------------------
+Can't use multiple render targets. Falling back to two passes. 36061
+    - changing height and width on component
+        - doesnt work
+        - could be applying but being overriden

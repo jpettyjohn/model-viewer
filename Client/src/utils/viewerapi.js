@@ -13,8 +13,9 @@ export function initViewer(container) {
 	return new Promise(function (resolve, reject) {
 		// Call getAccessToken to retrieve access token
 		getAccessToken(function (access_token, expires_in) {
-			console.log(access_token);
+			//console.log(access_token);
 			// Initialize viewer after retrieving access token
+			/* eslint-disable */
 			Autodesk.Viewing.Initializer(
 				{ env: "AutodeskProduction", accessToken: access_token, height: "50%", width: "50%" },
 				function () {
@@ -28,6 +29,7 @@ export function initViewer(container) {
 					resolve(viewer);
 				}
 			);
+			/* eslint-enable */
 		});
 	});
 }
@@ -41,6 +43,8 @@ export function loadModel(viewer, urn) {
 			reject({ code, message, errors });
 		}
 		viewer.setLightPreset(0);
+		/* eslint-disable */
 		Autodesk.Viewing.Document.load("urn:" + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
+		/* eslint-enable */
 	});
 }
