@@ -39,7 +39,8 @@ const ViewerComponent = () => {
 		const dropdown = document.getElementById("models");
 		dropdown.innerHTML = "";
 		try {
-			const resp = await fetch("http://localhost:8010/api/models");
+			const baseUrl = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8010';
+			const resp = await fetch(`${baseUrl}/api/models`);
 			if (!resp.ok) {
 				throw new Error(await resp.text());
 			}
@@ -62,7 +63,7 @@ const ViewerComponent = () => {
 			console.error(err);
 		}
 	};
-
+	
 	const setupModelUpload = async (viewer) => {
 		const upload = document.getElementById("upload");
 		const input = document.getElementById("input");
