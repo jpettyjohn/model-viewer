@@ -1,6 +1,7 @@
 const express = require('express');
 const { PORT } = require('./config/config.js');
 const cors = require("cors");
+const path = require("path");
 
 let app = express();
 app.use(cors());
