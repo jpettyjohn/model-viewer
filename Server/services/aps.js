@@ -3,6 +3,7 @@ const { AuthenticationClient, Scopes } = require("@aps_sdk/authentication");
 const { OssClient, CreateBucketsPayloadPolicyKeyEnum, CreateBucketXAdsRegionEnum } = require("@aps_sdk/oss");
 const { ModelDerivativeClient, View, Type } = require("@aps_sdk/model-derivative");
 const { APS_CLIENT_ID, APS_CLIENT_SECRET, APS_BUCKET } = require("../config/config.js");
+const fs = require('fs');
 
 const sdk = SdkManagerBuilder.create().build();
 const authenticationClient = new AuthenticationClient(sdk);
@@ -109,3 +110,24 @@ service.getManifest = async (urn) => {
 };
 
 service.urnify = (id) => Buffer.from(id).toString("base64").replace(/=/g, "");
+
+service.getModelViews = async (urn) => {
+        const { access_token } = await service.getInternalToken();
+		const modelViews = await modelDerivativeClient.getModelViews(access_token, urn); 
+		console.log(modelViews);
+        return modelViews;
+   
+};
+
+// New function to get properties
+service.getProperties = async (urn, guid) => {
+	const { access_token } = await service.getInternalToken();
+	const properties = await modelDerivativeClient.getAllProperties(access_token, urn, guid);
+	console.log("got properties");
+	return properties;
+};
+
+// Function to save data to a JSON file
+service.saveToJsonFile = (filename, data) => {
+	fs.writeFileSync(filename, JSON.stringify(data, null, 2));
+};

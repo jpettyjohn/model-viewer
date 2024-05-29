@@ -2,13 +2,12 @@
   "name": "model-viewer",
   "version": "1.0.0",
   "description": "",
-  "main": "server/server.js",
+  "main": "Server/server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
-    "install": "cd server && npm i && cd ../client && npm i",
-    "seed": "cd server && npm run seed",
-    "build": "cd client && npm run build"
+    "start": "node Server/server.js",
+    "develop": "concurrently \"cd Server && npm run watch\" \"cd Client && npm start\"",
+    "install": "cd Server && npm i && cd ../Client && npm i",
+    "build": "cd Client && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +22,8 @@
     "@types/forge-viewer": "^7.69.9",
     "cors": "^2.8.5",
     "express": "^4.17.2"
+  },
+  "engines": {
+    "node": ">=0.10.0"
   }
 }

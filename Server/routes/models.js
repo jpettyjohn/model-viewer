@@ -1,6 +1,6 @@
 const express = require("express");
 const formidable = require("express-formidable");
-const { listObjects, uploadObject, translateObject, getManifest, urnify } = require("../services/aps.js");
+const { listObjects, uploadObject, translateObject, getManifest, urnify, getModelViews, getProperties, saveToJsonFile } = require("../services/aps.js");
 
 let router = express.Router();
 
@@ -55,6 +55,29 @@ router.post("/api/models", formidable({ maxFileSize: Infinity }), async function
 			name: obj.objectKey,
 			urn: urnify(obj.objectId),
 		});
+	} catch (err) {
+		next(err);
+	}
+});
+router.get("/api/models/:urn/metadata", async function (req, res, next) {
+	try {
+		const metadata = await getMetadata(req.params.urn);
+		saveToJsonFile('metadata.json', metadata);
+		res.download('metadata.json');
+	} catch (err) {
+		next(err);
+	}
+});
+
+// Endpoint to get model properties and save it to a JSON file
+router.get("/api/models/:urn/properties", async function (req, res, next) {
+	try {
+		const modelViews = await getModelViews(req.params.urn);
+		console.log(modelViews.data);
+		const guid = modelViews.data.metadata[0].guid;
+		const properties = await getProperties(req.params.urn, guid);
+		saveToJsonFile('properties.json', properties);
+		res.download('properties.json');
 	} catch (err) {
 		next(err);
 	}
