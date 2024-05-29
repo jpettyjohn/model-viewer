@@ -136,6 +136,19 @@ const onModelSelected = async (viewer, urn) => {
             default:
                 clearNotification();
                 loadModel(viewer, urn);
+                // Fetch properties
+                const propertiesResp = await fetch(`${baseUrl}/api/models/${urn}/properties`);
+                if (!propertiesResp.ok) {
+                    throw new Error(await propertiesResp.text());
+                }
+                const properties = await propertiesResp.json();
+                // Prompt user to download properties JSON file
+                const propertiesBlob = new Blob([JSON.stringify(properties, null, 2)], { type: 'application/json' });
+                const propertiesUrl = URL.createObjectURL(propertiesBlob);
+                const propertiesLink = document.createElement('a');
+                propertiesLink.href = propertiesUrl;
+                propertiesLink.setAttribute('download', 'properties.json');
+                propertiesLink.click();
                 break;
         }
     } catch (err) {

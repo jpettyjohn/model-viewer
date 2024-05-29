@@ -2,9 +2,11 @@ const express = require('express');
 const { PORT } = require('./config/config.js');
 const cors = require("cors");
 const path = require("path");
+const bodyParser = require('body-parser');
 
 let app = express();
 app.use(cors());
+app.use(bodyParser.json({ limit: '100mb' }));
 //app.use(express.static('wwwroot'));
 app.use(require('./routes/auth.js'));
 app.use(require('./routes/models.js'));
