@@ -1,9 +1,13 @@
 const { SdkManagerBuilder } = require("@aps_sdk/autodesk-sdkmanager");
 const { AuthenticationClient, Scopes } = require("@aps_sdk/authentication");
-const { OssClient, CreateBucketsPayloadPolicyKeyEnum, CreateBucketXAdsRegionEnum } = require("@aps_sdk/oss");
+const {
+	OssClient,
+	CreateBucketsPayloadPolicyKeyEnum,
+	CreateBucketXAdsRegionEnum,
+} = require("@aps_sdk/oss");
 const { ModelDerivativeClient, View, Type } = require("@aps_sdk/model-derivative");
 const { APS_CLIENT_ID, APS_CLIENT_SECRET, APS_BUCKET } = require("../config/config.js");
-const fs = require('fs');
+const fs = require("fs");
 
 const sdk = SdkManagerBuilder.create().build();
 const authenticationClient = new AuthenticationClient(sdk);
@@ -13,20 +17,20 @@ const modelDerivativeClient = new ModelDerivativeClient(sdk);
 const service = (module.exports = {});
 
 service.getInternalToken = async () => {
-	const credentials = await authenticationClient.getTwoLeggedToken(APS_CLIENT_ID, APS_CLIENT_SECRET, [
-		Scopes.DataRead,
-		Scopes.DataCreate,
-		Scopes.DataWrite,
-		Scopes.BucketCreate,
-		Scopes.BucketRead,
-	]);
+	const credentials = await authenticationClient.getTwoLeggedToken(
+		APS_CLIENT_ID,
+		APS_CLIENT_SECRET,
+		[Scopes.DataRead, Scopes.DataCreate, Scopes.DataWrite, Scopes.BucketCreate, Scopes.BucketRead]
+	);
 	return credentials;
 };
 
 service.getPublicToken = async () => {
-	const credentials = await authenticationClient.getTwoLeggedToken(APS_CLIENT_ID, APS_CLIENT_SECRET, [
-		Scopes.DataRead,
-	]);
+	const credentials = await authenticationClient.getTwoLeggedToken(
+		APS_CLIENT_ID,
+		APS_CLIENT_SECRET,
+		[Scopes.DataRead]
+	);
 	return credentials;
 };
 
@@ -112,17 +116,18 @@ service.getManifest = async (urn) => {
 service.urnify = (id) => Buffer.from(id).toString("base64").replace(/=/g, "");
 
 service.getModelViews = async (urn) => {
-        const { access_token } = await service.getInternalToken();
-		const modelViews = await modelDerivativeClient.getModelViews(access_token, urn); 
-		console.log(modelViews);
-        return modelViews;
-   
+	const { access_token } = await service.getInternalToken();
+	const modelViews = await modelDerivativeClient.getModelViews(access_token, urn);
+	console.log(modelViews);
+	return modelViews;
 };
 
 // New function to get properties
 service.getProperties = async (urn, guid) => {
 	const { access_token } = await service.getInternalToken();
-	const properties = await modelDerivativeClient.getAllProperties(access_token, urn, guid, {'forceget': true });
+	const properties = await modelDerivativeClient.getAllProperties(access_token, urn, guid, {
+		forceget: true,
+	});
 	console.log("got properties");
 	return properties;
 };
@@ -130,16 +135,16 @@ service.getProperties = async (urn, guid) => {
 // Function to save data to a JSON file
 
 service.saveToJsonFile = async (filename, data) => {
-    try {
-        // Convert the data to a JSON string
-        const jsonData = JSON.stringify(data, null, 2);
+	try {
+		// Convert the data to a JSON string
+		const jsonData = JSON.stringify(data, null, 2);
 
-        // Write the JSON string to the file
-        fs.writeFileSync(filename, jsonData);
+		// Write the JSON string to the file
+		fs.writeFileSync(filename, jsonData);
 
-        console.log("Data saved to JSON file:", filename);
-    } catch (error) {
-        console.error("Error saving data to JSON file:", error);
-        throw error; // Re-throw error to be handled by the caller
-    }
+		console.log("Data saved to JSON file:", filename);
+	} catch (error) {
+		console.error("Error saving data to JSON file:", error);
+		throw error; // Re-throw error to be handled by the caller
+	}
 };
