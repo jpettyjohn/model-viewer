@@ -76,6 +76,8 @@ router.get("/api/models/:urn/properties", async function (req, res, next) {
 		console.log(modelViews.data);
 		const guid = modelViews.data.metadata[0].guid;
 		const properties = await getProperties(req.params.urn, guid);
+		console.log('this works');
+		console.log(properties);
 		saveToJsonFile('properties.json', properties);
 		res.download('properties.json');
 	} catch (err) {

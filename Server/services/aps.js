@@ -122,12 +122,24 @@ service.getModelViews = async (urn) => {
 // New function to get properties
 service.getProperties = async (urn, guid) => {
 	const { access_token } = await service.getInternalToken();
-	const properties = await modelDerivativeClient.getAllProperties(access_token, urn, guid);
+	const properties = await modelDerivativeClient.getAllProperties(access_token, urn, guid, {'forceget': true });
 	console.log("got properties");
 	return properties;
 };
 
 // Function to save data to a JSON file
-service.saveToJsonFile = (filename, data) => {
-	fs.writeFileSync(filename, JSON.stringify(data, null, 2));
+
+service.saveToJsonFile = async (filename, data) => {
+    try {
+        // Convert the data to a JSON string
+        const jsonData = JSON.stringify(data, null, 2);
+
+        // Write the JSON string to the file
+        fs.writeFileSync(filename, jsonData);
+
+        console.log("Data saved to JSON file:", filename);
+    } catch (error) {
+        console.error("Error saving data to JSON file:", error);
+        throw error; // Re-throw error to be handled by the caller
+    }
 };
