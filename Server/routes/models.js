@@ -88,8 +88,8 @@ router.get("/api/models/:urn/properties", async function (req, res, next) {
 		const properties = await getProperties(req.params.urn, guid);
 		console.log("this works");
 		console.log(properties);
-		saveToJsonFile("properties.txt", properties);
-		res.download("properties.txt");
+		// saveToJsonFile("properties.txt", properties);
+		// res.download("properties.txt");
 	} catch (err) {
 		next(err);
 	}

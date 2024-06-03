@@ -16,23 +16,24 @@ const ViewerComponent = () => {
 				setSelectedUrn(urn);
 				setupModelSelection(viewer, urn);
 				setupModelUpload(viewer);
+				addRoomListener(viewer);
 			});
+
+			const handleResize = () => {
+				// Update viewer dimensions based on container size
+				if (window.viewer) {
+					// Assuming `window.viewer` references the viewer instance
+					window.viewer.resize();
+				}
+			};
+
+			window.addEventListener("resize", handleResize);
+
+			return () => {
+				isMounted = false; // Set the flag to false when unmounting
+				window.removeEventListener("resize", handleResize);
+			};
 		}
-
-		const handleResize = () => {
-			// Update viewer dimensions based on container size
-			if (window.viewer) {
-				// Assuming `window.viewer` references the viewer instance
-				window.viewer.resize();
-			}
-		};
-
-		window.addEventListener("resize", handleResize);
-
-		return () => {
-			isMounted = false; // Set the flag to false when unmounting
-			window.removeEventListener("resize", handleResize);
-		};
 	}, []);
 
 	const setupModelSelection = async (viewer, selectedUrn) => {
@@ -180,6 +181,93 @@ const ViewerComponent = () => {
 		overlay.innerHTML = "";
 		overlay.style.display = "none";
 	};
+
+	/*eslint-disable*/
+	const addRoomListener = async (viewer) => {
+		viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, function (event) {
+			/*eslint-enable*/
+			const selectedIds = event.dbIdArray;
+			const category = event.model.getProperties(selectedIds).category;
+			console.log(category);
+			if (selectedIds.length > 0) {
+				const roomId = selectedIds[0];
+				//console.log("Room ID selected:", roomId);
+
+				// You can now use this roomId to compute the bounding box or perform other actions
+				const boundingBox = getBoundingBoxForRoom(viewer, roomId);
+				const elementsWithinBoundingBox = getElementsWithinBoundingBox(viewer, boundingBox);
+				console.log("Elements within bounding box:", elementsWithinBoundingBox);
+
+				isolateElements(viewer, elementsWithinBoundingBox);
+			}
+		});
+	};
+
+	/*eslint-disable*/
+	function getBoundingBoxForRoom(viewer, roomId, growAmount = 4) {
+		const instanceTree = viewer.model.getInstanceTree();
+		const fragList = viewer.model.getFragmentList();
+
+		let boundingBox = new THREE.Box3();
+		instanceTree.enumNodeFragments(
+			roomId,
+			function (fragId) {
+				const fragBoundingBox = new THREE.Box3();
+				fragList.getWorldBounds(fragId, fragBoundingBox);
+				boundingBox.union(fragBoundingBox);
+			},
+			true
+		);
+
+		// Grow the bounding box by a specified amount (5cm each side)
+		boundingBox.expandByScalar(growAmount);
+
+		return boundingBox;
+	}
+	function getElementsWithinBoundingBox(viewer, boundingBox) {
+		const instanceTree = viewer.model.getInstanceTree();
+		const rootId = instanceTree.getRootId();
+		const elementsWithinBoundingBox = [];
+		const fragments = instanceTree.fragList.fragments.fragId2dbId;
+
+		fragments.forEach((fragId, index) => {
+			const fragBoundingBox = new THREE.Box3();
+
+			viewer.model.getFragmentList().getWorldBounds(index, fragBoundingBox);
+
+			if (isBoundingBoxWithin(boundingBox, fragBoundingBox)) {
+				console.log("entered");
+				elementsWithinBoundingBox.push(instanceTree.getNodeParentId(fragId));
+			}
+		});
+
+		return [...new Set(elementsWithinBoundingBox)];
+	}
+	/*eslint-enable*/
+
+	function isBoundingBoxWithin(boundingBox, targetBox) {
+		// Get the min and max points of both bounding boxes
+		const bbMin = boundingBox.min;
+		const bbMax = boundingBox.max;
+		const targetMin = targetBox.min;
+		const targetMax = targetBox.max;
+
+		// Check if all dimensions of bbMin are greater than or equal to targetMin
+		// and all dimensions of bbMax are less than or equal to targetMax
+		return (
+			bbMin.x <= targetMin.x &&
+			bbMin.y <= targetMin.y &&
+			bbMin.z <= targetMin.z &&
+			bbMax.x >= targetMax.x &&
+			bbMax.y >= targetMax.y &&
+			bbMax.z >= targetMax.z
+		);
+	}
+
+	function isolateElements(viewer, elementIds) {
+		viewer.isolate(elementIds);
+		viewer.fitToView(elementIds);
+	}
 
 	return (
 		<div className="viewercomponent-main">

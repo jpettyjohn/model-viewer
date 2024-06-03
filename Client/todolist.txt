@@ -21,6 +21,15 @@ search function
 database of sites to look at in viewer
 
 
+
+
+Allow bounding box to surrond a room
+----------------------------------
+problem
+    need to know it is a room
+    when something else is selected it shouldn't have isolation like a room
+
+
 Passive Features
 -------------------
 Make the application prettier

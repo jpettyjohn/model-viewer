@@ -1,13 +1,16 @@
 export async function getAccessToken(callback) {
-	const baseUrl = process.env.NODE_ENV === 'production' ? 'https://autodesk-model-viewer-7d6fe4c9b6e5.herokuapp.com' : 'http://localhost:8010';
+	const baseUrl =
+		process.env.NODE_ENV === "production"
+			? "https://autodesk-model-viewer-7d6fe4c9b6e5.herokuapp.com"
+			: "http://localhost:8010";
 	const resp = await fetch(`${baseUrl}/api/auth/token`);
 	if (!resp.ok) {
-	  throw new Error(await resp.text());
+		throw new Error(await resp.text());
 	}
 	const { access_token, expires_in } = await resp.json();
 	// Callback with access token and expiration
 	callback(access_token, expires_in);
-  }
+}
 
 // Function to initialize viewer
 export function initViewer(container) {
